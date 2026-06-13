@@ -1,19 +1,143 @@
-# Deep Learning Portfolio Management
+# Deep Learning Enhanced Multi-Factor Equity Portfolio Management
 
-This project investigates whether machine learning
-and deep learning can improve equity portfolio allocation.
+Ce projet explore si le machine learning et le deep learning peuvent améliorer
+les portefeuilles factoriels traditionnels, sur un univers de 100 actions du S&P 500.
 
-## Models
+## Question de recherche
 
-- XGBoost
-- LSTM
+Peut-on améliorer les portefeuilles factoriels traditionnels grâce au machine learning et au deep learning ?
 
-## Features
+## Pipeline
 
-- Momentum
-- Volatility
-- RSI
+```
+Raw Market Data → Data Cleaning → Feature Engineering → Factor Construction
+→ Alpha Prediction → Portfolio Optimization → Risk Management
+→ Backtesting → Performance Attribution
+```
 
-## Goal
+## Structure du projet
 
-Predict future stock returns and build a systematic portfolio.
+```
+project/
+├── data/                  # Données brutes et traitées (non versionnées)
+├── notebooks/             # Notebooks d'exploration et de résultats
+├── src/
+│   ├── data_loader.py     # Téléchargement et nettoyage des données (yfinance, FRED)
+│   ├── factors.py          # Construction des facteurs (Value, Momentum, Quality, Low Vol, Size)
+│   ├── models.py           # Modèles ML/DL (XGBoost, LightGBM, LSTM, GRU)
+│   ├── portfolio.py         # Optimisation de portefeuille (Mean-Variance, Risk Parity)
+│   └── backtest.py          # Backtesting, risque (VaR, CVaR, drawdown), coûts de transaction
+├── requirements.txt
+└── README.md
+```
+
+## Facteurs et features
+
+- Momentum (5j, 20j, 60j)
+- Volatilité (20j)
+- Moyennes mobiles (MA20, MA50, MA200)
+- RSI, MACD
+- Volume relatif
+- Facteurs académiques : Value, Quality, Momentum, Low Volatility, Size (Fama-French)
+
+## Modèles
+
+- Random Forest, XGBoost, LightGBM (prédiction du rendement à 20 jours)
+- LSTM, GRU (séquences de 60 jours)
+
+## Optimisation de portefeuille
+
+- Equal Weight
+- Minimum Variance
+- Risk Parity
+- Mean-Variance Optimization
+
+## Gestion du risque
+
+- VaR, CVaR
+- Maximum Drawdown
+- Turnover, Beta
+- Coûts de transaction (frais de courtage, slippage)
+
+## Dashboard
+
+Un dashboard Streamlit présente la performance cumulée, le drawdown, la composition
+du portefeuille et l'attribution de performance.
+
+---
+
+# Manuel d'utilisation (GitHub)
+
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/<ton-utilisateur>/<nom-du-repo>.git
+cd <nom-du-repo>
+```
+
+### 2. Créer l'environnement virtuel
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Linux / macOS
+.venv\Scripts\activate           # Windows
+```
+
+### 3. Installer les dépendances
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 4. Configurer le kernel Jupyter (si besoin)
+
+```bash
+python -m ipykernel install --user --name=.venv --display-name="Python (.venv)"
+```
+
+Puis, dans VS Code ou Jupyter, sélectionner le kernel **Python (.venv)**.
+
+### 5. Lancer les notebooks
+
+```bash
+jupyter lab
+```
+
+Ouvrir et exécuter dans l'ordre les notebooks du dossier `notebooks/`.
+
+### 6. Lancer le dashboard
+
+```bash
+streamlit run src/dashboard.py
+```
+
+### 7. Workflow Git recommandé
+
+```bash
+git checkout -b feature/nom-de-la-feature
+# ... modifications ...
+git add .
+git commit -m "Description claire du changement"
+git push origin feature/nom-de-la-feature
+```
+
+Puis ouvrir une Pull Request vers `main`.
+
+### 8. Mettre à jour les dépendances
+
+Après installation d'un nouveau package :
+
+```bash
+pip freeze > requirements.txt
+```
+
+## Sources de données
+
+- [Yahoo Finance](https://finance.yahoo.com/) (OHLCV via `yfinance`)
+- [FRED](https://fred.stlouisfed.org/) (données macroéconomiques)
+
+## Avertissement
+
+Projet réalisé dans un cadre académique/personnel. Aucune des stratégies présentées
+ne constitue un conseil en investissement.
