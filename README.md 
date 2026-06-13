@@ -1,0 +1,19 @@
+# Deep Learning Portfolio Management
+
+This project investigates whether machine learning
+and deep learning can improve equity portfolio allocation.
+
+## Models
+
+- XGBoost
+- LSTM
+
+## Features
+
+- Momentum
+- Volatility
+- RSI
+
+## Goal
+
+Predict future stock returns and build a systematic portfolio.
