@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual environment
+.venv/
+venv/
+
+# Data (gros fichiers, ne pas versionner)
+data/*.parquet
+data/raw/
+!data/.gitkeep
+!data/sample/
+
+# Jupyter
+.ipynb_checkpoints
+
+# Environnement / secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
