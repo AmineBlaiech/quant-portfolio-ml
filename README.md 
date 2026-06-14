@@ -1,7 +1,8 @@
 # Deep Learning Enhanced Multi-Factor Equity Portfolio Management
 
 Ce projet explore si le machine learning et le deep learning peuvent améliorer
-les portefeuilles factoriels traditionnels, sur un univers de 100 actions du S&P 500.
+les portefeuilles factoriels traditionnels, sur un univers de 100 actions du S&P 500,
+avec des ETFs sectoriels comme benchmarks.
 
 ## Question de recherche
 
@@ -19,19 +20,47 @@ Raw Market Data → Data Cleaning → Feature Engineering → Factor Constructio
 
 ```
 project/
-├── data/                  # Données brutes et traitées (non versionnées)
-├── notebooks/             # Notebooks d'exploration et de résultats
+├── data/
+│   ├── prices.parquet       # OHLCV des 100 actions (2015-2024)
+│   ├── benchmarks.parquet    # OHLCV des 12 ETFs (SPY + 11 SPDR sectoriels)
+│   └── sample/                # Échantillon CSV versionné sur GitHub
+├── notebooks/                  # Notebooks d'exploration et de résultats
 ├── src/
-│   ├── data_loader.py     # Téléchargement et nettoyage des données (yfinance, FRED)
-│   ├── factors.py          # Construction des facteurs (Value, Momentum, Quality, Low Vol, Size)
-│   ├── models.py           # Modèles ML/DL (XGBoost, LightGBM, LSTM, GRU)
-│   ├── portfolio.py         # Optimisation de portefeuille (Mean-Variance, Risk Parity)
-│   └── backtest.py          # Backtesting, risque (VaR, CVaR, drawdown), coûts de transaction
+│   ├── tickers.py              # Univers de 100 actions + ETFs benchmarks
+│   ├── data_loader.py          # Téléchargement des données (yfinance)
+│   ├── check_data.py           # Vérification qualité (NaN, doublons, trous)
+│   ├── clean_data.py           # Nettoyage des données
+│   ├── make_sample.py          # Génération d'un échantillon pour GitHub
+│   ├── factors.py              # Construction des facteurs (à venir)
+│   ├── models.py               # Modèles ML/DL (à venir)
+│   ├── portfolio.py            # Optimisation de portefeuille (à venir)
+│   └── backtest.py             # Backtesting et gestion du risque (à venir)
 ├── requirements.txt
 └── README.md
 ```
 
-## Facteurs et features
+## État d'avancement
+
+- [x] **Semaine 1** : infrastructure (venv, dépôt GitHub, structure)
+- [x] **Semaine 2** : collecte de données (100 actions + 12 ETFs benchmarks, 2015-2024, données vérifiées et propres)
+- [ ] **Semaine 3** : feature engineering (momentum, volatilité, MA, RSI, MACD, volume relatif)
+- [ ] **Semaine 4** : facteurs académiques (Value, Quality, Momentum, Low Vol, Size)
+- [ ] **Semaine 5** : benchmarks (équipondéré, momentum, low vol vs SPY)
+- [ ] **Semaine 6** : machine learning (Random Forest, XGBoost, LightGBM)
+- [ ] **Semaine 7** : feature importance (SHAP)
+- [ ] **Semaine 8** : deep learning (LSTM, GRU)
+- [ ] **Semaine 9** : optimisation de portefeuille (Mean-Variance, Risk Parity)
+- [ ] **Semaine 10** : gestion du risque (VaR, CVaR, drawdown, beta)
+- [ ] **Semaine 11** : coûts de transaction
+- [ ] **Semaine 12** : dashboard Streamlit
+
+## Données
+
+- **100 actions** du S&P 500 (`src/tickers.py`), OHLCV via `yfinance`, 2015-01-02 à 2024-12-31
+- **12 ETFs benchmarks** : SPY (marché) + 11 ETFs sectoriels SPDR (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLRE, XLU, XLC)
+- Vérifié : aucun NaN, aucun doublon, couverture en jours ouvrés ≥95% pour tous les tickers
+
+## Facteurs et features (à venir)
 
 - Momentum (5j, 20j, 60j)
 - Volatilité (20j)
@@ -40,29 +69,24 @@ project/
 - Volume relatif
 - Facteurs académiques : Value, Quality, Momentum, Low Volatility, Size (Fama-French)
 
-## Modèles
+## Modèles (à venir)
 
 - Random Forest, XGBoost, LightGBM (prédiction du rendement à 20 jours)
 - LSTM, GRU (séquences de 60 jours)
 
-## Optimisation de portefeuille
+## Optimisation de portefeuille (à venir)
 
 - Equal Weight
 - Minimum Variance
 - Risk Parity
 - Mean-Variance Optimization
 
-## Gestion du risque
+## Gestion du risque (à venir)
 
 - VaR, CVaR
 - Maximum Drawdown
 - Turnover, Beta
 - Coûts de transaction (frais de courtage, slippage)
-
-## Dashboard
-
-Un dashboard Streamlit présente la performance cumulée, le drawdown, la composition
-du portefeuille et l'attribution de performance.
 
 ---
 
@@ -98,21 +122,28 @@ python -m ipykernel install --user --name=.venv --display-name="Python (.venv)"
 
 Puis, dans VS Code ou Jupyter, sélectionner le kernel **Python (.venv)**.
 
-### 5. Lancer les notebooks
+### 5. Télécharger et vérifier les données
+
+```bash
+python src/data_loader.py    # télécharge prices.parquet et benchmarks.parquet
+python src/check_data.py     # vérifie la qualité des données
+python src/clean_data.py     # nettoie si nécessaire
+python src/make_sample.py    # génère un échantillon CSV pour GitHub
+```
+
+### 6. Lancer les notebooks
 
 ```bash
 jupyter lab
 ```
 
-Ouvrir et exécuter dans l'ordre les notebooks du dossier `notebooks/`.
-
-### 6. Lancer le dashboard
+### 7. Lancer le dashboard (à venir)
 
 ```bash
 streamlit run src/dashboard.py
 ```
 
-### 7. Workflow Git recommandé
+### 8. Workflow Git recommandé
 
 ```bash
 git checkout -b feature/nom-de-la-feature
@@ -124,9 +155,7 @@ git push origin feature/nom-de-la-feature
 
 Puis ouvrir une Pull Request vers `main`.
 
-### 8. Mettre à jour les dépendances
-
-Après installation d'un nouveau package :
+### 9. Mettre à jour les dépendances
 
 ```bash
 pip freeze > requirements.txt
@@ -135,9 +164,9 @@ pip freeze > requirements.txt
 ## Sources de données
 
 - [Yahoo Finance](https://finance.yahoo.com/) (OHLCV via `yfinance`)
-- [FRED](https://fred.stlouisfed.org/) (données macroéconomiques)
+- [FRED](https://fred.stlouisfed.org/) (données macroéconomiques, à venir)
 
 ## Avertissement
 
-Projet réalisé dans un cadre personnel. Aucune des stratégies présentées
+Projet réalisé dans un cadre académique/personnel. Aucune des stratégies présentées
 ne constitue un conseil en investissement.
