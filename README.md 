@@ -29,7 +29,6 @@ project/
 │   ├── tickers.py              # Univers de 100 actions + ETFs benchmarks
 │   ├── data_loader.py          # Téléchargement des données (yfinance)
 │   ├── check_data.py           # Vérification qualité (NaN, doublons, trous)
-│   ├── clean_data.py           # Nettoyage des données
 │   ├── make_sample.py          # Génération d'un échantillon pour GitHub
 │   ├── factors.py              # Construction des facteurs (à venir)
 │   ├── models.py               # Modèles ML/DL (à venir)
